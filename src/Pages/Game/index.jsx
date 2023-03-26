@@ -3,6 +3,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { toaster } from 'evergreen-ui';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -59,6 +60,73 @@ const options = {
   }
 };
 
+
+const styles = {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
+    backgroundColor: 'linear-gradient(180deg, #ffffff 0%, #f2f2f2 100%)'
+  },
+
+  card: {
+    width: '80%',
+    maxWidth: '800px',
+    margin: 'auto',
+    marginTop: '10vh',
+    marginBottom: '10vh',
+    height: 'auto',
+    padding: '20px',
+    boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+    borderRadius: '10px',
+  },
+  button: {
+    width: '100%',
+    marginTop: '20px',
+  marginBottom: '25px',
+  borderRadius: '8px',
+  textTransform: 'none',
+  fontWeight: 'bold',
+  background: 'linear-gradient(45deg, #FF6B6B 30%, #FF8E53 90%)',
+  color: '#FFF',
+  transition: '0.3s',
+  '&:hover': {
+    background: 'linear-gradient(45deg, #FE4A4A 30%, #FF7B3D 90%)',
+    boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
+    color: '#FFF',
+  },
+  },
+  
+  formControl: {
+    width: '100%',
+    margin: 'auto',
+    marginTop: '20px',
+    marginBottom: '20px',
+  },
+
+  list: {
+    width: '100%',
+    bgcolor: 'background.paper',
+    overflow: 'auto',
+    maxHeight: 350,
+    '& .MuiTypography-root': {
+      display: 'inline',
+      fontWeight: 'bold',
+    },
+    '& .MuiListItem-root': {
+      borderBottom: '1px solid #ccc',
+      '&:last-child': {
+        borderBottom: 'none',
+      },
+    },
+    '& .MuiListItemText-root': {
+      '& .MuiTypography-root.MuiTypography-body2': {
+        color: (data) => (data.correct ? 'success.main' : 'error.main'),
+      },
+    },
+  },
+};
 const Game = () => {
   const location = useLocation();
   const history = useHistory();
@@ -266,11 +334,12 @@ const Game = () => {
 
   return (
     <>
-      {
+      <Box sx={styles.container}>
+        {
         !gameOver ?
           (
-            <Card raised={true} sx={{ width: '30vw', height: '50vh', margin: 'auto', marginTop: '20vh' }}>
-              <FormControl sx={{ width: '80%', margin: 'auto', marginTop: '4vh', marginLeft: '3vw' }}>
+            <Card raised={true} sx={styles.card}>
+              <FormControl sx={styles.formControl}>
                 <TextField
                   id="outlined-basic"
                   label="Question"
@@ -282,7 +351,7 @@ const Game = () => {
                 />
               </FormControl>
 
-              <FormControl sx={{ width: '80%', margin: 'auto', marginTop: '1vh', marginLeft: '3vw' }}>
+              <FormControl sx={styles.formControl}>
                 <RadioGroup
                   aria-label="quiz"
                   name="quiz"
@@ -303,7 +372,7 @@ const Game = () => {
 
               <Button
                 variant="contained"
-                sx={{ width: '80%', margin: 'auto', marginTop: '1vh', marginLeft: '3vw' }}
+                sx={styles.button}
                 onClick={handleSubmitClick}
               >
                 Submit
@@ -315,8 +384,8 @@ const Game = () => {
           :
           (
             <div>
-                  <Card raised={true} sx={{ width: '40vw', height: '64vh', margin: 'auto', marginTop: '20vh' }}>
-                    <FormControl sx={{ width: '84%', margin: 'auto', marginTop: '4vh', marginLeft: '3vw' }}>
+                  <Card raised={true} sx={styles.card}>
+                    <FormControl sx={styles.formControl}>
                       <TextField
                         id="outlined-basic"
                         label="Question"
@@ -326,8 +395,8 @@ const Game = () => {
                       />
                     </FormControl>
 
-                <FormControl sx={{ width: '80%', margin: 'auto', marginTop: '1vh', marginLeft: '3vw' }}>
-                      <List sx={{ width: '105%', bgcolor: 'background.paper', overflow: 'auto', maxHeight: 350 }}>
+                <FormControl sx={styles.formControl}>
+                      <List sx={styles.list}>
                         {gameHistory.map((data, index) => (
                           <ListItem key={index}>
                             <ListItemText
@@ -349,25 +418,24 @@ const Game = () => {
                             />
                           </ListItem>
                         ))}
-                    <ListItem sx={{ mt: '-10vh' }}>
+                    <ListItem >
                       <Pie data={pieData} options={options} id="chart" ref={chartRef} style={{ scale: '0.65' }} />
                     </ListItem>
-                    <ListItem sx={{ mt: '-10vh' }}>
-                      <Button
+                    </List>
+                    <Button
                         variant="contained"
-                        sx={{ width: '80%', margin: 'auto', marginTop: '2vh', marginLeft: '3vw' }}
+                          sx={styles.button}
                         onClick={() => generatePdf(gameHistory)}
                       >
                         Download Report
                       </Button>
-                    </ListItem>
-                  </List>
                 </FormControl>
                 <SpeedDialer actions={actions}/>
               </Card>
               </div>
           )
       }
+      </Box>
     </>
   );
 };

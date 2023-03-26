@@ -1,4 +1,6 @@
 import React from 'react';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
@@ -18,10 +20,84 @@ import TextField from '@mui/material/TextField';
 import Groups2Icon from '@mui/icons-material/Groups2';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { toaster } from 'evergreen-ui';
+import { styled } from '@mui/material/styles';
+
 
 import SpeedDialer from '../../Components/SpeedDial';
 import { getAllCategory, getAllDifficulty} from './requests';
 
+
+
+const styles = {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
+    backgroundColor: 'linear-gradient(180deg, #ffffff 0%, #f2f2f2 100%)'
+  },
+  card: {
+    width: '80%',
+    maxWidth: '800px',
+    margin: 'auto',
+    marginTop: '10vh',
+    marginBottom: '10vh',
+    height: 'auto',
+    padding: '20px',
+    boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
+    borderRadius: '10px',
+  },
+  formControl: {
+    width: '100%',
+    margin: 'auto',
+    marginTop: '20px',
+    marginBottom: '20px',
+  },
+  switch: {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: '20px',
+  '& .MuiSwitch-thumb': {
+    backgroundColor: '#FF6B6B',
+    '&.Mui-checked': {
+      backgroundColor: '#4CAF50',
+    },
+  },
+  '& .MuiSwitch-track': {
+    backgroundColor: '#e0e0e0',
+  },
+  '& .MuiTypography-root': {
+    color: '#A5A5A5',
+    fontSize: '14px',
+    fontWeight: 'bold',
+  },
+  '& .Mui-checked .MuiTypography-root': {
+    color: '#4CAF50',
+  },
+},
+  textField: {
+    width: '100%',
+    margin: 'auto',
+    marginTop: '20px',
+    marginBottom: '20px',
+  },
+  button: {
+  width: '100%',
+  marginBottom: '20px',
+  borderRadius: '8px',
+  textTransform: 'none',
+  fontWeight: 'bold',
+  background: 'linear-gradient(45deg, #FF6B6B 30%, #FF8E53 90%)',
+  color: '#FFF',
+  transition: '0.3s',
+  '&:hover': {
+    background: 'linear-gradient(45deg, #FE4A4A 30%, #FF7B3D 90%)',
+    boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
+    color: '#FFF',
+  },
+},
+};
 
 const Home = () => {
 
@@ -105,107 +181,111 @@ const Home = () => {
 
   return (
     <>
-      <Card raised={true} sx={{ width: '30vw', margin: 'auto', marginTop: '20vh', height: 'auto' }}>
-        <FormControl sx={{ width: '80%', margin: 'auto', marginTop: '7vh', marginLeft: '3vw' }}>
-          <InputLabel id="category-label">Category</InputLabel>
-          <Select
-            labelId="category-label"
-            id="category"
-            value={category}
-            label="Category"
-            onChange={handleCategoryChange}
-          >
-            {allCategories.map((category) => {
-              return <MenuItem value={category} key={category}>{category}</MenuItem>
-            })}
-          </Select>
-        </FormControl>
-
-        <FormControl sx={{ width: '80%', margin: 'auto', marginTop: '7vh', marginLeft: '3vw' }}>
-          <InputLabel id="difficulty-label">Difficulty</InputLabel>
-          <Select
-            labelId="difficulty-label"
-            id="difficulty"
-            value={difficulty}
-            label="Difficulty"
-            onChange={handleDifficultyChange}
-          >
-            {allDifficulties.map((difficulty) => {
-              return <MenuItem value={difficulty} key={difficulty}>{difficulty}</MenuItem>
-            })}
-          </Select>
-        </FormControl>
-
-        <FormControl sx={{ width: '80%', margin: 'auto', marginTop: '3vh', marginLeft: '3vw' }}>
-          <Tooltip title="Enable/Disable to get more filter options" placement="right">
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={additionalModifications}
-                  onChange={() => setAdditionalModifications(!additionalModifications)}
-                  name="additionalModifications"
-                  color="primary"
-                />
-              }
-              sx={{ ml: '42%' }}
-              />
-          </Tooltip>
-        </FormControl>
-
-        {
-          additionalModifications &&
-            <FormControl sx={{ width: '80%', margin: 'auto', marginTop: '3vh', marginLeft: '3vw' }}>
-              <InputLabel id="noOfQuestions-label">No. of Questions</InputLabel>
-              <Select
-                labelId="noOfQuestions-label"
-                id="noOfQuestions"
-                value={noOfQuestions}
-                label="No. of Questions"
-                onChange={(event) => setNoOfQuestions(event.target.value)}
-              >
-                {
-                  [5, 10, 15, 20, 'All'].map((noOfQuestions) => {
-                    return <MenuItem value={noOfQuestions} key={noOfQuestions}>{noOfQuestions}</MenuItem>
-                  })
-                }
-              </Select>
-            </FormControl>
-        }
-
-        {
-          additionalModifications &&
-          <FormControl sx={{ width: '80%', margin: 'auto', marginTop: '3vh', marginLeft: '3vw' }}>
-              <TextField
-                id="scoreForCorrectAnswer"
-                placeholder="Score for Correct Answer"
-                label="Score for Correct Answer"
-                type="number"
-                value={scoreForCorrectAnswer}
-                onChange={(event) => setScoreForCorrectAnswer(event.target.value)}
-              />
-            </FormControl>
-        }
-
-        {
-          additionalModifications &&
-          <FormControl sx={{ width: '80%', margin: 'auto', marginTop: '3vh', marginLeft: '3vw' }}>
-              <TextField
-                id="scoreForIncorrectAnswer"
-                placeholder="Score for Incorrect Answer"
-                label="Score for Incorrect Answer"
-                type="number"
-                value={scoreForIncorrectAnswer}
-                onChange={(event) => setScoreForIncorrectAnswer(event.target.value)}
-              />
+      <Box sx={styles.container}>
+        <Card raised={true} sx={styles.card}>
+          <FormControl sx={styles.formControl}>
+            <InputLabel id="category-label">Category</InputLabel>
+            <Select
+              labelId="category-label"
+              id="category"
+              value={category}
+              label="Category"
+              onChange={handleCategoryChange}
+            >
+              {allCategories.map((category) => {
+                return <MenuItem value={category} key={category}>{category}</MenuItem>
+              })}
+            </Select>
           </FormControl>
-        }
 
+          <FormControl sx={styles.formControl}>
+            <InputLabel id="difficulty-label">Difficulty</InputLabel>
+            <Select
+              labelId="difficulty-label"
+              id="difficulty"
+              value={difficulty}
+              label="Difficulty"
+              onChange={handleDifficultyChange}
+            >
+              {allDifficulties.map((difficulty) => {
+                return <MenuItem value={difficulty} key={difficulty}>{difficulty}</MenuItem>
+              })}
+            </Select>
+          </FormControl>
 
-        <FormControl sx={{ width: '80%', margin: 'auto', marginTop: '2vh', marginLeft: '2vw', padding: '2vh' }}>
-          <Button variant="contained" sx={{ width: '100%' }} onClick={handleButtonClick}>Start</Button>
-        </FormControl>
-      </Card>
-      <SpeedDialer actions={actions} />
+          <FormControl sx={styles.formControl}>
+            <Tooltip title="Enable/Disable to get more filter options" placement="right">
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={additionalModifications}
+                    onChange={() => setAdditionalModifications(!additionalModifications)}
+                    name="additionalModifications"
+                    color="primary"
+                  />
+                }
+                sx={styles.switch}
+                />
+            </Tooltip>
+          </FormControl>
+
+          {
+            additionalModifications &&
+              <FormControl sx={styles.formControl}>
+                <InputLabel id="noOfQuestions-label">No. of Questions</InputLabel>
+                <Select
+                  labelId="noOfQuestions-label"
+                  id="noOfQuestions"
+                  value={noOfQuestions}
+                  label="No. of Questions"
+                  onChange={(event) => setNoOfQuestions(event.target.value)}
+                >
+                  {
+                    [5, 10, 15, 20, 'All'].map((noOfQuestions) => {
+                      return <MenuItem value={noOfQuestions} key={noOfQuestions}>{noOfQuestions}</MenuItem>
+                    })
+                  }
+                </Select>
+              </FormControl>
+          }
+
+          {
+            additionalModifications &&
+            <FormControl sx={styles.formControl}>
+                <TextField
+                  id="scoreForCorrectAnswer"
+                  placeholder="Score for Correct Answer"
+                  label="Score for Correct Answer"
+                  type="number"
+                  value={scoreForCorrectAnswer}
+                  onChange={(event) => setScoreForCorrectAnswer(event.target.value)}
+                  sx={styles.textField}
+                />
+              </FormControl>
+          }
+
+          {
+            additionalModifications &&
+            <FormControl sx={styles.formControl}>
+                <TextField
+                  id="scoreForIncorrectAnswer"
+                  placeholder="Score for Incorrect Answer"
+                  label="Score for Incorrect Answer"
+                  type="number"
+                  value={scoreForIncorrectAnswer}
+                  onChange={(event) => setScoreForIncorrectAnswer(event.target.value)}
+                  sx={styles.textField}
+                />
+            </FormControl>
+              }
+              <FormControl sx={styles.formControl}>
+                  <Button variant="contained" sx={styles.button} onClick={handleButtonClick}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Start Quiz</Typography>
+                  </Button>
+              </FormControl>
+            </Card>
+            <SpeedDialer actions={actions} />
+      </Box>
     </>
   )
 };
